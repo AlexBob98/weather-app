@@ -1,0 +1,49 @@
+.weather {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.snow {
+    background: url('../weather/snow.svg');
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background-repeat: no-repeat;
+    top: -60px;
+    z-index: -1;
+}
+.rain {
+    background: url('../effects/rain.svg');
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    background-repeat: no-repeat;
+    top: -60px;
+    z-index: -1;
+}
+.day::after{
+    content: '';
+    background: url('../weather/sun-day.jpg');
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    top: -100px;
+    background-repeat: no-repeat;
+    background-position: right;
+    opacity: 0.6;
+}
+.night::after{
+    content: '';
+    background: url('../weather/sun-night.jpg');
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    top: -100px;
+    background-repeat: no-repeat;
+    background-position: right;
+    opacity: 0.6;
+}

@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600&display=swap");
+
+*::-webkit-scrollbar,
+html *::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  transition: 0.5s ease-in-out;
+  background-color: #000;
+}
+*::-webkit-scrollbar-track,
+html *::-webkit-scrollbar-track {
+  background: rgb(209, 209, 209);
+}
+*::-webkit-scrollbar-thumb,
+html *::-webkit-scrollbar-thumb {
+  background-color: #8a8a8a;
+  border-radius: 5px;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+img {
+  vertical-align: top;
+}
+
+.weather-app {
+  position: relative;
+  font-family: "Manrope", sans-serif;
+
+  &__section {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    background: #d8d8d8;
+    overflow: hidden;
+    width: 13em;
+    height: 3.5em;
+    border-radius: 15px;
+    box-shadow: 1px 1px 11px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s;
+  }
+  &__section.active {
+    width: 3.5em;
+    height: 3.5em;
+  }
+  &__section.open {
+    height: 18em;
+    width: 15em;
+  }
+
+  &__search-box {
+    padding: 1em;
+    height: 3.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .click:hover {
+      fill: #000;
+    }
+  }
+
+  &__gear {
+    height: 1.6em;
+    width: 1.5em;
+    cursor: pointer;
+    transition: all 0.6s;
+  }
+
+  &__gear.click {
+    transform: rotate(-45deg);
+    fill: rgba(0, 0, 0, 0.2);
+  }
+
+  &__search-bar {
+    padding: 0.5em 0.8em;
+    border-radius: 15px;
+    width: 80%;
+    transition: 0.5s ease-in;
+  }
+
+  &__search-bar.hidden {
+    display: none;
+  }
+
+  &__city {
+    padding: 0px 1.5em;
+    font-size: 0.5em;
+    overflow-y: scroll;
+    height: 28em;
+    width: 95%;
+
+    .list {
+      font-size: 14px;
+      height: 2.5em;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      margin: 1em 0;
+      display: grid;
+      grid-template-columns: 80% 10%;
+      align-items: center;
+      border-radius: 10px;
+      justify-content: center;
+      cursor: pointer;
+
+      .close {
+        color: #AEAEAD;
+        transition: all 0.8s;
+      }
+    }
+    .list:hover .close {
+      color: #000;
+    }
+    .error {
+      font-size: 17px;
+      color: #aeaeae;
+      text-align: center;
+      padding: 2em 0;
+    }
+  }
+
+  &__block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 1em;
+    font-size: 15px;
+    user-select: none;
+    gap: 0.5em;
+    position: relative;
+
+    .name {
+      font-size: 1.4em;
+      text-align: center;
+    }
+
+    .desc {
+      text-align: center;
+    }
+
+    .wind {
+      display: grid;
+      text-align: center;
+      grid-template-columns: 5% 35% 35%;
+      align-items: center;
+      justify-content: center;
+
+      &-img {
+        width: 1em;
+        height: 1em;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &__block-image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: -15px;
+
+    .image {
+      margin-left: -15px;
+    }
+
+    .temp {
+      font-size: 35px;
+      font-weight: bold;
+    }
+    .desc {
+      text-align: center;
+    }
+  }
+}
