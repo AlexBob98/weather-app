@@ -73,6 +73,9 @@ img {
       fill: #000;
     }
   }
+  &__search-box:hover .click {
+      fill: rgba(0, 0, 0, 1);
+  }
 
   &__gear {
     height: 1.6em;
