@@ -6,3 +6,6 @@
 4) Run `npm start`
 
 
+### Screenshot
+
+![Weather App](https://github.com/AlexBob98/weather-app/blob/weather-app/weather/public/weather-app.png "Weather App")
