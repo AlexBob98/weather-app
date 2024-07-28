@@ -1,0 +1,3 @@
+weather/node_modules/
+gh-pages/weather/node_modules/
+.env
