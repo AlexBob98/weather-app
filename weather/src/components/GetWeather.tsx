@@ -1,7 +1,7 @@
 import url from 'constants/GetResponse';
 import getLocalStorage from 'constants/LocalStorage';
 import localStorageCities from 'constants/LocalStorageCities';
-import { weatherName, inputClass, sectionBlockClass, gearClass } from 'constants/RenderElements';
+import { inputClass, sectionBlockClass, gearClass } from 'constants/RenderElements';
 import { ICity } from 'interfaces/City';
 import { IWeather } from 'interfaces/Weather';
 import React, { useEffect, useState } from 'react';
@@ -18,84 +18,78 @@ export default function GetWeather() {
   const [weather, setWeather] = useState<IWeather>(getLocalStorage());
 
   useEffect(() => {
-    if (weather) {
+    if (weather && weather.name) {
       document.title = `Weather App ${weather.name}`;
       localStorage.setItem('data_weather', JSON.stringify(weather));
     }
   }, [weather]);
 
-  async function getWeatherData (props: string) {
-    const response: Response = await fetch(url(props));
-    const data: IWeather = await response.json();
-    const cityName = {
-      id: data.id,
-      name: data.name
-    };
-
-    switch (response.status) {
-    case 200:
-      setWeather(data);
-      setLocalData([...localData, cityName]);
-      setMessage('');
-      setCity('');
-      break;
-    case 400:
-      setMessage('Error, please try now');
-      setTimeout(()=> { setMessage(''); }, 1000);
-      break;
-    case 404:
-      setMessage('Your city not found');
-      setTimeout(()=> { setMessage(''); }, 1000);
-      setCity('');
-      break;
+  async function getWeatherData(cityName: string): Promise<void> {
+    try {
+      const response: Response = await fetch(url(cityName));
+      if (response.status === 200) {
+        const data: IWeather = await response.json();
+        setWeather(data);
+        const newCity: ICity = { id: data.id, name: data.name };
+        setLocalData((prevLocalData) => [...prevLocalData, newCity]);
+        setMessage('');
+        setCity('');
+      } else if (response.status === 400) {
+        setMessage('Error, please try again.');
+        setTimeout(() => setMessage(''), 1000);
+      } else if (response.status === 404) {
+        setMessage('City not found.');
+        setTimeout(() => setMessage(''), 1000);
+        setCity('');
+      }
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      setMessage('Error fetching weather data.');
+      setTimeout(() => setMessage(''), 1000);
     }
   }
 
-  useEffect(() => {
-    if (weather) {
-      getWeatherData(weather.name);
-    }
-  }, []);
-
-  async function search (event: { key: string }): Promise<void> {
+  async function search(event: React.KeyboardEvent<HTMLInputElement>): Promise<void> {
     if (event.key === 'Enter') {
-      await getWeatherData(city).catch(console.error);
+      await getWeatherData(city);
       setSearchbar(!searchBar);
     }
   }
 
-  async function handleCityClick(event: React.SyntheticEvent<HTMLDivElement>) {
-    const cityName: string = event.currentTarget.dataset.id || '';
+  function handleCityClick(event: React.SyntheticEvent<HTMLDivElement>): void {
+    const cityName = event.currentTarget.dataset.id || '';
     if (cityName) {
-      await getWeatherData(cityName).catch(console.error);
+      getWeatherData(cityName);
       setSearchbar(!searchBar);
     }
   }
 
   return (
-    <>
-      <section className={sectionBlockClass(searchBar, weather)}>
-        <div className="weather-app__search-box">
-          {searchBar ? (
-            <>
-              <input className={inputClass(searchBar)} />
-              <div className="name">{`${weatherName(weather)}`}</div>
-            </>
-          ) : (
-            <RenderInputSearch onChange={(e) => setCity(e.target.value)} value={city} onKeyUp={search}/>
-          )}
-          <GoGear onClick={() => setSearchbar(!searchBar)} className={gearClass(searchBar)} />
-        </div>
-        {message ? (
-          <div className="weather-app__block">
-            <div className="name">{message}</div>
-          </div>
-        ) : (
+    <section className={sectionBlockClass(searchBar, weather)}>
+      <div className="weather-app__search-box">
+        {searchBar ? (
           <>
-            {searchBar ? <RenderWeather value={weather} /> : <RenderCity onClick={(e) => handleCityClick(e)} value={localData}/>}
+            <input className={inputClass(searchBar)} value={city} onChange={(e) => setCity(e.target.value)} onKeyUp={search} />
+            <div className="name">{weather?.name}</div>
           </>
+        ) : (
+          <RenderInputSearch onChange={(e) => setCity(e.target.value)} value={city} onKeyUp={search} />
         )}
-      </section>
-    </>
+        <GoGear onClick={() => setSearchbar(!searchBar)} className={gearClass(searchBar)} />
+      </div>
+      {message ? (
+        <div className="weather-app__block">
+          <div className="name">{message}</div>
+        </div>
+      ) : (
+        <>
+          {searchBar ? (
+            <RenderWeather value={weather} />
+          ) : (
+            <RenderCity onClick={handleCityClick} value={localData} />
+          )}
+        </>
+      )}
+    </section>
   );
 }

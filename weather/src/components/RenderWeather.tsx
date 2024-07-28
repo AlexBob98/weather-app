@@ -12,28 +12,42 @@ import {
   weatherStyle,
 } from 'constants/RenderElements';
 import { IWeather } from 'interfaces/Weather';
-import React from 'react';
+import React, { useMemo } from 'react';
 import Arrow from '../assets/svg/arrow.svg';
 
-function RenderWeather({ value }: {value: IWeather}) {
+function RenderWeather({ value }: { value: IWeather }) {
+  const memoizedValues = useMemo(() => ({
+    weatherClass: weatherStyle(value),
+    dayClass: dayStyle(value),
+    imageSrc: imageUrl(value),
+    imageAlt: altImage(value),
+    temp: temperature(value),
+    feelTemp: feelLikeTemp(value),
+    desc: descTemp(value),
+    arrowStyle: styleArrow(value),
+    pressure: hpaPressure(value),
+    humid: humidity(value),
+    vis: visibility(value),
+  }), [value]);
+
   return (
     <div className='weather-app__block'>
-      <div className={`${weatherStyle(value)}`}></div>
-      <div className={`weather ${dayStyle(value)}`}></div>
+      <div className={memoizedValues.weatherClass}></div>
+      <div className={`weather ${memoizedValues.dayClass}`}></div>
       <div className="weather-app__block-image">
-        <div><img className="image" src={imageUrl(value)} alt={altImage(value)} /></div>
-        <div className="temp">{temperature(value)}</div>
+        <div><img className="image" src={memoizedValues.imageSrc} alt={memoizedValues.imageAlt} /></div>
+        <div className="temp">{memoizedValues.temp}</div>
       </div>
       <div className="desc">
-        {feelLikeTemp(value)}
-        <div className="desc">{descTemp(value)}</div>
+        {memoizedValues.feelTemp}
+        <div className="desc">{memoizedValues.desc}</div>
       </div>
       <div className="wind">
-        <img src={Arrow} className="wind-img" style={styleArrow(value)} />
-        {hpaPressure(value)}
-        <div className="humidity">{humidity(value)}</div>
+        <img src={Arrow} className="wind-img" style={memoizedValues.arrowStyle} />
+        {memoizedValues.pressure}
+        <div className="humidity">{memoizedValues.humid}</div>
       </div>
-      <div className="visibility">{visibility(value)}</div>
+      <div className="visibility">{memoizedValues.vis}</div>
     </div>
   );
 }

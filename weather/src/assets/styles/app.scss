@@ -60,6 +60,7 @@ img {
   &__section.open {
     height: 18em;
     width: 15em;
+    user-select: none;
   }
 
   &__search-box {
