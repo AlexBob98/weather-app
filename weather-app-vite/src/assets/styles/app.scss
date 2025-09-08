@@ -34,7 +34,6 @@
 
   &__search-box {
     padding: 1em;
-    height: 3.5em;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -131,26 +130,18 @@
   }
 
   &__block {
-    display: flex;
     align-items: center;
-    justify-content: center;
+    display: flex;
     flex-direction: column;
-    padding: 0 1em;
-    font-size: 15px;
-    user-select: none;
-    gap: 0.5em;
+    font-size: 0.9rem;
+    justify-content: center;
     position: relative;
+    user-select: none;
 
     .name {
       font-size: 1.4em;
       text-align: center;
     }
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0rem;
 
     .desc {
       text-align: center;
