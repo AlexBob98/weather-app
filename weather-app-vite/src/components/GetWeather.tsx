@@ -98,7 +98,7 @@ export default function GetWeather() {
   }
 
   const timeOfDayClass = weather && !showCities ? getTimeOfDayClass(weather) : '';
-  console.log(showCities)
+
   return (
     <section className={`${sectionBlockClass(true, weather)}${showCities ? ' city-list' : ''} ${timeOfDayClass} `}>
       <div className="weather-app__search-box">
