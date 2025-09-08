@@ -146,16 +146,25 @@
       text-align: center;
     }
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0rem;
+
     .desc {
       text-align: center;
     }
 
     .wind {
       display: grid;
-      text-align: center;
-      grid-template-columns: 5% 35% 35%;
-      align-items: center;
+      grid-template-columns: 1.5rem 4.5rem 4.5rem;
+      place-content: center;
+      place-items: center;
       justify-content: center;
+      gap: 0.3rem;
+      text-align: center;
+      margin: 0.5rem 0;
 
       &-img {
         width: 1em;
