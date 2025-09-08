@@ -30,25 +30,25 @@ export const descTemp = (weather: IWeather): string => {
   return w ? `${w.main} (${w.description})` : "Unknown";
 };
 
-export const dayStyle = (weather: IWeather) => {
+export const getTimeOfDayClass = (weather: IWeather) => {
   const icon = weather?.weather?.[0]?.icon;
   if (icon) {
     const mainDay = icon.replace(/[0-9]/g, "");
     switch (mainDay) {
       case "d":
-        return "day ";
+        return "day";
       case "n":
-        return "night ";
+        return "night";
       default:
         return "";
     }
   }
 };
 
-export const weatherStyle = (weather: IWeather) => {
+export const getWeatherStyle = (weather: IWeather) => {
   if (weather) {
-    const mainDesc = weather?.weather?.[0]?.main;
-    switch (mainDesc) {
+    const mainWeatherType = weather?.weather?.[0]?.main;
+    switch (mainWeatherType) {
       case "Snow":
         return "snow";
       case "Rain":

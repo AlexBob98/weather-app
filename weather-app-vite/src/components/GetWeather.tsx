@@ -8,11 +8,13 @@ import {
 } from "../constants/RenderElements";
 import { ICity } from "../interfaces/City";
 import { IWeather } from "../interfaces/Weather";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GoGear } from "react-icons/go";
 import RenderCity from "./RenderCity";
 import RenderWeather from "./RenderWeather";
 import Loader from '../utils/Spinner';
+import { getTimeOfDayClass } from '../constants/RenderElements';
+import { loadLastCity, saveLastCity } from '../constants/LastCity';
 
 export default function GetWeather() {
   const [city, setCity] = useState("");
@@ -36,7 +38,11 @@ export default function GetWeather() {
 
     if (!weather.name && savedCities.length > 0) {
       setIsLoading(true);
-      getWeatherData(savedCities[0].name).finally(() => {
+
+      const lastCity = loadLastCity();
+      const cityToLoad = lastCity || savedCities[0].name;
+
+      getWeatherData(cityToLoad).finally(() => {
         setIsLoading(false);
       });
     } else {
@@ -56,11 +62,11 @@ export default function GetWeather() {
       if (result.success && result.data) {
         const data = result.data;
         setWeather(data);
-        console.log('Weather state updated:', data); // ← ДОБАВЬТЕ ЭТУ СТРОКУ
-        console.log('City name from data:', data.name);
         const newCity: ICity = { id: data.id, name: data.name };
         setLocalData((prev) => [...prev, newCity]);
         setCity("");
+        saveLastCity(data.name);
+        setShowCities(!showCities);
       } else if (result.error) {
         setMessage(result.error);
         setTimeout(() => setMessage(""), 1000);
@@ -91,8 +97,10 @@ export default function GetWeather() {
     }
   }
 
+  const timeOfDayClass = weather && !showCities ? getTimeOfDayClass(weather) : '';
+
   return (
-    <section className={`${sectionBlockClass(true, weather)}${showCities ? ' city-list' : ''}`}>
+    <section className={`${sectionBlockClass(true, weather)}${showCities ? ' city-list' : ''} ${timeOfDayClass} `}>
       <div className="weather-app__search-box">
         <input
           className={`weather-app__search-bar ${inputClass(showCities)}`}
@@ -101,40 +109,31 @@ export default function GetWeather() {
           onKeyDown={search}
           placeholder="Search your city..."
           id="city-search"
-      />
-        {!showCities && weather?.name && (
-          <div className="name">{weather.name}</div>
-        )}
-        <GoGear
-          onClick={() => setShowCities(!showCities)}
-          className={gearClass(!showCities)}
-      />
+        />
+        {!showCities && weather?.name && (<div className="name">{weather.name}</div>)}
+        <GoGear onClick={() => setShowCities(!showCities)} className={gearClass(!showCities)}/>
       </div>
-      {isLoading ? (
-        <div className="weather-app__loader">
-          <Loader />
-        </div>
-    ) : (
-      <>
-        {message ? (
-          <div className="weather-app__block">
-            <div className="name">{message}</div>
-          </div>
-        ) : (
-          <>
-            {showCities ? (
-              <RenderCity onClick={handleCityClick} value={localData} />
-            ) : weather?.name ? (
-              <RenderWeather value={weather} />
-            ) : (
-              <div className="weather-app__block">
-                <div className="name">Search a city to see the weather</div>
-              </div>
-            )}
-          </>
-        )}
-      </>
-    )}
+      {isLoading ? (<div className="weather-app__loader"><Loader /></div>) : (
+        <>
+          {message ? (
+            <div className="weather-app__block">
+              <div className="name">{message}</div>
+            </div>
+          ) : (
+            <>
+              {showCities ? (
+                <RenderCity onClick={handleCityClick} value={localData} />
+              ) : weather?.name ? (
+                <RenderWeather value={weather} />
+              ) : (
+                <div className="weather-app__block">
+                  <div className="name">Search a city to see the weather</div>
+                </div>
+              )}
+            </>
+          )}
+        </>
+      )}
     </section>
   );
 }

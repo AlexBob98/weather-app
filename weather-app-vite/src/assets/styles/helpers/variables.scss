@@ -1,0 +1,23 @@
+// Colors
+$dark-primary-gray: #eef3f8;
+$dark: #080808;
+$gray-100: #e6e7ee;
+$gray-200: #d6dae1;
+$gray-300: #d3e0f1;
+$gray-400: #c4ccdb;
+$gray-500: #8a8e9d;
+$light-primary-gray: #f4f8fb;
+$primary-gray: #eff5f9;
+$red: #e13a3a;
+$secondary-light-red: #f99c9c;
+$white: #fff;
+
+// filter svg
+$filter-primary-icon: brightness(0) saturate(100%) invert(56%) sepia(22%)
+  saturate(6891%) hue-rotate(109deg) brightness(93%) contrast(94%);
+$filter-download-button: brightness(0) saturate(100%) invert(100%) sepia(9%) saturate(7465%) hue-rotate(222deg) brightness(112%) contrast(107%);
+
+// Shadows
+$shadow-btn-default: 0px 3px 10px rgba(39, 62, 107, 0.1),
+  0px 2px 3.6px rgba(43, 63, 113, 0.1);
+

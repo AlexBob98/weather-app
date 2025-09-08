@@ -1,6 +1,5 @@
 import {
   altImage,
-  dayStyle,
   descTemp,
   feelLikeTemp,
   hpaPressure,
@@ -9,14 +8,13 @@ import {
   styleArrow,
   temperature,
   visibility,
-  weatherStyle,
+  getWeatherStyle,
 } from '../constants/RenderElements';
 import { IWeather } from '../interfaces/Weather';
 import Arrow from '../assets/svg/arrow.svg';
 
 function RenderWeather({ value }: { value: IWeather }) {
-  const weatherClass = weatherStyle(value);
-  const dayClass = dayStyle(value);
+  const weatherClass = getWeatherStyle(value);
   const imageSrc = imageUrl(value);
   const imageAlt = altImage(value);
   const temp = temperature(value);
@@ -29,8 +27,7 @@ function RenderWeather({ value }: { value: IWeather }) {
 
   return (
     <div className='weather-app__block'>
-      <div className={weatherClass}></div>
-      <div className={`weather ${dayClass}`}></div>
+      {weatherClass && <div className={weatherClass}></div>}
       <div className="weather-app__block-image">
         <div>
           <img className="image" src={imageSrc} alt={imageAlt} />

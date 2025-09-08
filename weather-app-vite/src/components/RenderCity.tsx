@@ -6,11 +6,36 @@ import Loader from '../utils/Spinner';
 function RenderCity({ value, onClick }: IRenderCity) {
   const [city, setCity] = useState(value);
   const [isLoading, setIsLoading] = useState(true);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   function deleteCity(id: number) {
-    const filteredCities = city.filter(item => item.id !== id);
+    const filteredCities = city.filter(({ id: cityId }) => cityId !== id);
     setCity(filteredCities);
     localStorage.setItem('cities', JSON.stringify(filteredCities));
+  }
+
+  function handleDragStart(e: React.DragEvent, index: number) {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  }
+
+  function handleDrop(e: React.DragEvent, dropIndex: number) {
+    e.preventDefault();
+    if (draggedIndex || draggedIndex) {
+      const newCities = [...city];
+      const draggedItem = newCities[draggedIndex];
+      newCities.splice(draggedIndex, 1);
+      newCities.splice(dropIndex, 0, draggedItem);
+
+      setCity(newCities);
+      localStorage.setItem('cities', JSON.stringify(newCities));
+      setDraggedIndex(null);
+    }
   }
 
   useEffect(() => {
@@ -33,12 +58,30 @@ function RenderCity({ value, onClick }: IRenderCity) {
 
   return (
     <div className="weather-app__city">
-      {city.map((item: ICity, idx: number) => (
-        <div className="list" key={idx} data-index={idx}>
-          <div onClick={() => onClick(item.name)}>{item.name}</div>
-          <IoTrashOutline onClick={() => deleteCity(item.id)} className="close" />
-        </div>
-      ))}
+      <ul>
+        {city.map((item: ICity, idx: number) => (
+          <li
+            key={item.id}
+            className="list"
+            draggable
+            onDragStart={(e) => handleDragStart(e, idx)}
+            onDragOver={handleDragOver}
+            onDrop={(e) => handleDrop(e, idx)}
+          >
+            <p className='city-name' onClick={() => onClick(item.name)}>
+              {item.name}
+              <IoTrashOutline
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteCity(item.id);
+                }}
+                className="close"
+              />
+            </p>
+          </li>
+    ))}
+      </ul>
     </div>
   );
 }
