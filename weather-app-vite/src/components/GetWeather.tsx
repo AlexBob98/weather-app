@@ -66,7 +66,6 @@ export default function GetWeather() {
         setLocalData((prev) => [...prev, newCity]);
         setCity("");
         saveLastCity(data.name);
-        setShowCities(!showCities);
       } else if (result.error) {
         setMessage(result.error);
         setTimeout(() => setMessage(""), 1000);
@@ -87,6 +86,7 @@ export default function GetWeather() {
   async function search(event: React.KeyboardEvent<HTMLInputElement>): Promise<void> {
     if (event.key === "Enter") {
       await getWeatherData(city);
+      setShowCities(!showCities);
     }
   }
 
@@ -98,7 +98,7 @@ export default function GetWeather() {
   }
 
   const timeOfDayClass = weather && !showCities ? getTimeOfDayClass(weather) : '';
-
+  console.log(showCities)
   return (
     <section className={`${sectionBlockClass(true, weather)}${showCities ? ' city-list' : ''} ${timeOfDayClass} `}>
       <div className="weather-app__search-box">

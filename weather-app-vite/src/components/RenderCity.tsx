@@ -17,6 +17,14 @@ function RenderCity({ value, onClick }: IRenderCity) {
   function handleDragStart(e: React.DragEvent, index: number) {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
+    const target = e.target as HTMLElement;
+    target.classList.add('dragging');
+  }
+
+  function handleDragEnd() {
+    const draggingElements = document.querySelectorAll('.dragging');
+    draggingElements.forEach(el => el.classList.remove('dragging'));
+    setDraggedIndex(null);
   }
 
   function handleDragOver(e: React.DragEvent) {
@@ -67,6 +75,7 @@ function RenderCity({ value, onClick }: IRenderCity) {
             onDragStart={(e) => handleDragStart(e, idx)}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, idx)}
+            onDragEnd={handleDragEnd}
           >
             <p className='city-name' onClick={() => onClick(item.name)}>
               {item.name}
@@ -80,7 +89,7 @@ function RenderCity({ value, onClick }: IRenderCity) {
               />
             </p>
           </li>
-    ))}
+        ))}
       </ul>
     </div>
   );

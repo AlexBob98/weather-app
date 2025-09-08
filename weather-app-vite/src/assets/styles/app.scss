@@ -91,9 +91,17 @@
       align-items: center;
       font-size: 1rem;
 
+      &.dragging {
+        opacity: 0.5;
+        background-color: $gray-400;
+        transform: scale(1.05);
+        z-index: 10;
+        border: 2px dashed $secondary-light-red;
+      }
+
       &.drag-over {
-        background-color: #f0f0f0;
-        border: 1px dashed #ccc;
+        background-color: $gray-400;
+        border: 1px dashed $gray-500;
       }
 
       & .city-name {
@@ -111,7 +119,7 @@
     }
 
     .list:hover .close {
-      color: #000;
+      color: $dark;
     }
 
     .error {
