@@ -1,0 +1,36 @@
+*::-webkit-scrollbar,
+html *::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  transition: 0.3s ease-in-out;
+  background-color: #000;
+}
+*::-webkit-scrollbar-track,
+html *::-webkit-scrollbar-track {
+  background: rgb(209, 209, 209);
+}
+*::-webkit-scrollbar-thumb,
+html *::-webkit-scrollbar-thumb {
+  background-color: #8a8a8a;
+  border-radius: 5px;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+img {
+  vertical-align: top;
+}
