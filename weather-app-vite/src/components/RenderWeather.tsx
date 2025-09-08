@@ -26,12 +26,10 @@ function RenderWeather({ value }: { value: IWeather }) {
   const vis = visibility(value);
 
   return (
-    <div className='weather-app__block'>
+    <div className="weather-app__weather-block">
       {weatherClass && <div className={weatherClass}></div>}
       <div className="weather-app__block-image">
-        <div>
-          <img className="image" src={imageSrc} alt={imageAlt} />
-        </div>
+        <img className="image" src={imageSrc} alt={imageAlt} />
         <div className="temp">{temp}</div>
       </div>
       <div className="desc-container">

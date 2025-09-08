@@ -1,0 +1,64 @@
+@use "../helpers/variables" as *;
+
+.weather-app {
+  &__city {
+    padding: 0px 1.5em;
+    font-size: 0.5em;
+    overflow-y: scroll;
+    height: 28em;
+    width: 95%;
+
+    .list {
+      align-items: center;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      cursor: grab;
+      display: flex;
+      font-size: 1rem;
+      justify-content: space-between;
+      margin: 4px 0;
+      padding: 8px;
+
+      &:active {
+        cursor: grabbing;
+      }
+
+      &.dragging {
+        opacity: 0.5;
+        background-color: $gray-400;
+        transform: scale(1.05);
+        z-index: 10;
+        border: 2px dashed $secondary-light-red;
+      }
+
+      &.drag-over {
+        background-color: $gray-400;
+        border: 1px dashed $gray-500;
+      }
+
+      & .city-name {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .close {
+        color: #aeaead;
+        transition: all 0.8s;
+        cursor: pointer;
+      }
+    }
+
+    .list:hover .close {
+      color: $dark;
+    }
+
+    .error {
+      font-size: 17px;
+      color: #aeaeae;
+      text-align: center;
+      padding: 2em 0;
+    }
+  }
+}

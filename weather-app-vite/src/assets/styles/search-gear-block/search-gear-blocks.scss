@@ -1,0 +1,83 @@
+@use "../helpers/variables" as *;
+
+.weather-app {
+  &__search-box {
+    padding: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:hover .active {
+      fill: rgba(0, 0, 0, 1);
+    }
+  }
+
+  &__search-bar {
+    padding: 0.5em 0.8em;
+    border-radius: 15px;
+    width: 80%;
+    transition: 0.5s ease-in;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__gear {
+    height: 1.6em;
+    width: 1.5em;
+    cursor: pointer;
+    transition: all 0.6s;
+    filter: $shadow-btn-default;
+
+    &.active {
+      transform: rotate(-45deg);
+      fill: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__section {
+    &.active {
+      width: 3.5em;
+      height: 3.5em;
+      transition: all 0.3s ease-out;
+
+      &.city-list {
+        width: 15rem;
+      }
+
+      &.unvisibility-city {
+        .weather-app__gear.active {
+          fill: rgba(0, 0, 0, 1);
+        }
+      }
+
+      &.show-city {
+        height: 18em;
+        width: 15em;
+      }
+
+      &.hide-wear,
+      &.show-wear {
+        user-select: none;
+      }
+
+      &.show-wear {
+        & .weather-app__search-bar {
+          display: none;
+        }
+      }
+    }
+
+    .search-gear-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+
+      & .name {
+        margin-left: 1rem;
+      }
+    }
+  }
+}

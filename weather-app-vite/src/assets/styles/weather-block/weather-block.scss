@@ -1,0 +1,62 @@
+.weather-app {
+  &__weather-block {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+    justify-content: center;
+    position: relative;
+    user-select: none;
+
+    .name {
+      font-size: 1.4em;
+      text-align: center;
+    }
+
+    .desc {
+      text-align: center;
+    }
+
+    .desc-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wind {
+      display: grid;
+      grid-template-columns: 1.5rem 4.5rem 4.5rem;
+      place-content: center;
+      place-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      text-align: center;
+      margin: 0.5rem 0;
+
+      &-img {
+        width: 1em;
+        height: 1em;
+        margin-right: 5px;
+      }
+    }
+  }
+
+  &__block-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    & .image {
+      height: 5.5rem;
+      display: flex;
+      object-fit: cover;
+    }
+
+    .temp {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+  }
+}

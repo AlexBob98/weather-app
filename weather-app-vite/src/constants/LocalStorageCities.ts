@@ -12,3 +12,13 @@ export default function localStorageCities(): ICity[] {
   }
   return [];
 }
+
+export const saveCityToStorage = (newCity: ICity) => {
+  const savedCities = localStorageCities();
+  const exists = savedCities.some(c => c.id === newCity.id);
+  if (exists) return;
+
+  const updated = [...savedCities, newCity];
+  localStorage.setItem('cities', JSON.stringify(updated));
+  return updated;
+};

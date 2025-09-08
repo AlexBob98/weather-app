@@ -1,20 +1,16 @@
 import { fetchWeather, IFetchWeatherResult } from '../api/fetchWeather';
 import getLocalStorage from "../constants/LocalStorage";
-import localStorageCities from "../constants/LocalStorageCities";
-import {
-  inputClass,
-  sectionBlockClass,
-  gearClass,
-} from "../constants/RenderElements";
+import localStorageCities, { saveCityToStorage } from "../constants/LocalStorageCities";
+import { setActiveClassInMainSection } from "../constants/RenderElements";
 import { ICity } from "../interfaces/City";
 import { IWeather } from "../interfaces/Weather";
 import { useCallback, useEffect, useState } from "react";
-import { GoGear } from "react-icons/go";
 import RenderCity from "./RenderCity";
 import RenderWeather from "./RenderWeather";
 import Loader from '../utils/Spinner';
 import { getTimeOfDayClass } from '../constants/RenderElements';
 import { loadLastCity, saveLastCity } from '../constants/LastCity';
+import SearchInput from './ui/SearchInput';
 
 export default function GetWeather() {
   const [city, setCity] = useState("");
@@ -63,7 +59,10 @@ export default function GetWeather() {
         const data = result.data;
         setWeather(data);
         const newCity: ICity = { id: data.id, name: data.name };
-        setLocalData((prev) => [...prev, newCity]);
+        const updatedCities = saveCityToStorage(newCity);
+        if (updatedCities) {
+          setLocalData(updatedCities);
+        }
         setCity("");
         saveLastCity(data.name);
       } else if (result.error) {
@@ -98,42 +97,42 @@ export default function GetWeather() {
   }
 
   const timeOfDayClass = weather && !showCities ? getTimeOfDayClass(weather) : '';
+  const activeClassInMainSection = setActiveClassInMainSection(true, showCities, weather);
 
   return (
-    <section className={`${sectionBlockClass(true, weather)}${showCities ? ' city-list' : ''} ${timeOfDayClass} `}>
-      <div className="weather-app__search-box">
-        <input
-          className={`weather-app__search-bar ${inputClass(showCities)}`}
+    <section className={`${activeClassInMainSection}${showCities ? ' city-list' : ''} ${timeOfDayClass || ''}`}>
+      <div className="search-gear-block">
+        <SearchInput
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyDown={search}
-          placeholder="Search your city..."
-          id="city-search"
+          onSearch={search}
+          onToggleCities={() => setShowCities(!showCities)}
+          showCities={showCities}
         />
-        {!showCities && weather?.name && (<div className="name">{weather.name}</div>)}
-        <GoGear onClick={() => setShowCities(!showCities)} className={gearClass(!showCities)}/>
+        {!showCities && weather?.name && <div className="name">{weather.name}</div>}
       </div>
-      {isLoading ? (<div className="weather-app__loader"><Loader /></div>) : (
-        <>
-          {message ? (
-            <div className="weather-app__block">
-              <div className="name">{message}</div>
-            </div>
-          ) : (
-            <>
-              {showCities ? (
-                <RenderCity onClick={handleCityClick} value={localData} />
-              ) : weather?.name ? (
-                <RenderWeather value={weather} />
-              ) : (
+      {isLoading
+        ? (<div className="weather-app__loader"><Loader /></div>)
+        : (
+          <>
+            {message ? (
+              <div className="weather-app__block">
+                <div className="name">{message}</div>
+              </div>
+            ) : (
+              <>
+                {showCities
+              ? (<RenderCity onClick={handleCityClick} value={localData} />)
+              : weather?.name ? (<RenderWeather value={weather} />)
+              : (
                 <div className="weather-app__block">
-                  <div className="name">Search a city to see the weather</div>
+                  <div className="name">No cities yet. Click settings to add one.</div>
                 </div>
               )}
-            </>
-          )}
-        </>
-      )}
+              </>
+            )}
+          </>
+        )}
     </section>
   );
 }

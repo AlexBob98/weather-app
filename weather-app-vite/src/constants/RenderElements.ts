@@ -1,46 +1,46 @@
-import icons from "./WeatherIcon";
-import { IWeather } from "../interfaces/Weather";
+import icons from './WeatherIcon';
+import { IWeather } from '../interfaces/Weather';
 
 export const imageUrl = (weather: IWeather): string => {
   const icon = weather?.weather?.[0]?.icon;
-  return icon ? `${icons.url}${icon}@2x.png` : "";
+  return icon ? `${icons.url}${icon}@2x.png` : '';
 };
 
 export const altImage = (weather: IWeather): string => {
   const description = weather?.weather?.[0]?.description;
-  return description || "";
+  return description || '';
 };
 
 export const weatherName = (weather: IWeather): string => {
   return weather && weather.name && weather.sys?.country
     ? `${weather.name}, ${weather.sys.country}`
-    : "";
+    : '';
 };
 
 export const temperature = (weather: IWeather): string => {
-  return weather ? `${Math.round(weather.main?.temp)}°` : "";
+  return weather ? `${Math.round(weather.main?.temp)}°` : '';
 };
 
 export const feelLikeTemp = (weather: IWeather): string => {
-  return weather ? `Feels like ${Math.round(weather.main?.feels_like)}°` : "";
+  return weather ? `Feels like ${Math.round(weather.main?.feels_like)}°` : '';
 };
 
 export const descTemp = (weather: IWeather): string => {
   const w = weather?.weather?.[0];
-  return w ? `${w.main} (${w.description})` : "Unknown";
+  return w ? `${w.main} (${w.description})` : 'Unknown';
 };
 
 export const getTimeOfDayClass = (weather: IWeather) => {
   const icon = weather?.weather?.[0]?.icon;
   if (icon) {
-    const mainDay = icon.replace(/[0-9]/g, "");
+    const mainDay = icon.replace(/[0-9]/g, '');
     switch (mainDay) {
-      case "d":
-        return "day";
-      case "n":
-        return "night";
+      case 'd':
+        return 'day';
+      case 'n':
+        return 'night';
       default:
-        return "";
+        return '';
     }
   }
 };
@@ -49,13 +49,13 @@ export const getWeatherStyle = (weather: IWeather) => {
   if (weather) {
     const mainWeatherType = weather?.weather?.[0]?.main;
     switch (mainWeatherType) {
-      case "Snow":
-        return "snow";
-      case "Rain":
-      case "Drizzle":
-        return "rain";
+      case 'Snow':
+        return 'snow';
+      case 'Rain':
+      case 'Drizzle':
+        return 'rain';
       default:
-        return "";
+        return '';
     }
   }
 };
@@ -63,17 +63,17 @@ export const getWeatherStyle = (weather: IWeather) => {
 export const hpaPressure = (weather: IWeather): string => {
   return weather
     ? `${weather.wind?.speed}m/s ${weather.main?.pressure}hPa`
-    : "";
+    : '';
 };
 
 export const humidity = (weather: IWeather): string => {
-  return weather ? `Humidity: ${weather.main?.humidity}%` : "";
+  return weather ? `Humidity: ${weather.main?.humidity}%` : '';
 };
 
 export const visibility = (weather: IWeather): string => {
   return weather
     ? `Visibility: ${(weather.visibility / 1000).toFixed(0)}km`
-    : "";
+    : '';
 };
 
 export const styleArrow = (weather: IWeather): { transform: string } => {
@@ -81,18 +81,16 @@ export const styleArrow = (weather: IWeather): { transform: string } => {
   return { transform: `rotate(${deg}deg)` };
 };
 
-export const inputClass = (showCities: boolean): string => {
-  return showCities ? "" : "weather-app__search-bar hidden";
-};
-
-export const sectionBlockClass = (
+export const setActiveClassInMainSection = (
   searchBar: boolean,
+  showCities: boolean,
   weather: IWeather,
 ): string => {
-  const base = "weather-app__section";
-  const active = searchBar ? "active" : "";
-  const open = weather ? "show-current-wear" : "";
-  return [base, active, open].filter(Boolean).join(" ");
+  const currentClassSection = 'weather-app__section';
+  const isActiveSearchBar = searchBar ? 'active' : '';
+  const isCurrentCity = weather.name ? 'show-city' : 'unvisibility-city';
+  const isShowCities = !showCities ? 'show-wear' : 'hide-wear';
+  return [currentClassSection, isActiveSearchBar, isCurrentCity, isShowCities].filter(Boolean).join(' ');
 };
 
 export const gearClass = (showCities: boolean): string => {
