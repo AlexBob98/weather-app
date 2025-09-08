@@ -1,6 +1,6 @@
 const api = {
-  key: '4e45d4a71f4c1691be67ed6ff20b6806',
-  base: 'https://api.openweathermap.org/data/2.5/'
+  key: import.meta.env.VITE_API_KEY || '',
+  base: import.meta.env.REACT_APP_API_BASE_URL || 'https://api.openweathermap.org/data/2.5/'
 };
 
 export default api;
